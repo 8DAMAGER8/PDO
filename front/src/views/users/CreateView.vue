@@ -42,18 +42,12 @@ export default {
 
   methods: {
     createUser() {
-      axios.post(`https://1c07-87-117-61-241.ngrok-free.app`, {
-            name: this.name,
-            email: this.email,
-            password: this.password,
-            password_confirmation: this.password_confirmation,
-          },
+      axios.get(`http://localhost:8888/index.php/user/list?limit=5`,
           {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'ngrok-skip-browser-warning': 'any'
-            }
-          }).then(res => {console.log(res)}).catch((error) => {
+
+          }).then(res => {
+        console.log(res)
+      }).catch((error) => {
         console.error(error)
       })
     },

@@ -18,7 +18,7 @@ class Database
     {
         try {
             $stmt = $this->executeStatement( $query , $params );
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $exception) {
             return $exception->getMessage();
         }
@@ -26,13 +26,12 @@ class Database
     private function executeStatement($query = "" , $params = [])
     {
         try {
-            $stmt = $this->connection->prepare( $query );
+            $stmt = $this->connection->prepare($query);
             if($stmt === false) {
                 throw New PDOException("Unable to do prepared statement: " . $query);
             }
-            if( $params ) {
-                dump($params);
-                $stmt->bindParam($params[0], $params[1]);
+            if($params) {
+                $stmt->bindParam($params[0], $params[1], PDO::PARAM_INT);
             }
             $stmt->execute();
             return $stmt;

@@ -1,6 +1,10 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
 class UserController extends BaseController
 {
+    private const DEFAULT_LIMIT = 10;
+
+
     /**
      * "/user/list" Endpoint - Get list of users
      */
@@ -12,7 +16,7 @@ class UserController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $userModel = new UserModel();
-                $intLimit = 10;
+                $intLimit = self::DEFAULT_LIMIT;
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
@@ -28,12 +32,12 @@ class UserController extends BaseController
         }
         // send output
         if (!$strErrorDesc) {
-            $this->sendOutput(
+            return $this->sendOutput(
                 $responseData,
                 array('Content-Type: application/json', 'HTTP/1.1 200 OK')
             );
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)),
+            return $this->sendOutput(json_encode(array('error' => $strErrorDesc)),
                 array('Content-Type: application/json', $strErrorHeader)
             );
         }
